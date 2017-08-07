@@ -33,7 +33,7 @@
   "dependencies": {
     "angular-schema-form": "https://github.com/PerionNet/angular-schema-form.git#3.0.1",
     "angular-schema-form-bootstrap": "^0",
-    "angular-strap": "^2",
+    "angular-strap": "2.3.3",
     "bootstrap": "^3",
     "angular-ui-select": "^0"
   },
