@@ -3,7 +3,7 @@
         ng-controller="dynamicSelectController" ng-init="$$value$$=$$value$$||[];uiMultiSelectInitInternalModel($$value$$)">
   <label class="control-label {{form.labelHtmlClass}}" ng-show="showTitle()">{{form.title}}</label>
   <div class="form-group">
-    <ui-select multiple sortable-options="{{form.sortableOptions}}" ng-model="internalModel" theme="bootstrap"
+    <ui-select multiple ng-model="internalModel" theme="bootstrap"
                on-select="$$value$$.push($item.value)" on-remove="$$value$$.splice($$value$$.indexOf($item.value), 1)"
                class="{{form.options.uiClass}}" ng-disabled="form.disabled">
       <ui-select-match placeholder="{{form.placeholder || form.schema.placeholder || ('placeholders.select' | translate)}}">{{$item.name}}</ui-select-match>
