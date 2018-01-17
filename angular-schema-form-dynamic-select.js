@@ -154,11 +154,9 @@
 
         $scope.select_model = {};
 
-        console.log("Setting options." + $scope.form.options.toString());
         $scope.form.options.scope = $scope;
 
         $scope.triggerTitleMap = function () {
-            console.log("listener triggered");
             // Ugly workaround to trigger titleMap expression re-evaluation so that the selectFilter it reapplied.
             $scope.form.titleMap.push({"value": "345890u340598u3405u9", "name": "34095u3p4ouij"})
             $timeout(function () { $scope.form.titleMap.pop() })
@@ -222,7 +220,6 @@
 
             // The ui-selects needs to be reinitialized (UI select sets the internalModel and externalModel.
             if ($scope.internalModel) {
-                console.log("Call uiMultiSelectInitInternalModel");
                 $scope.uiMultiSelectInitInternalModel($scope.externalModel);
             }
         };
@@ -295,18 +292,15 @@
             }
             else if (!form.options) {
 
-                console.log("dynamicSelectController.populateTitleMap(key:" + form.key + ") : No options set, needed for dynamic selects");
             }
             else if (form.options.callback) {
                 form.titleMap = $scope.getCallback(form.options.callback)(form.options, search);
                 $scope.finalizeTitleMap(form,form.titleMap, form.options);
-                console.log("callback items: ", form.titleMap);
             }
             else if (form.options.asyncCallback) {
                 return $scope.getCallback(form.options.asyncCallback)(form.options, search).then(
                     function (_data) {
                         $scope.finalizeTitleMap(form, _data.data, form.options);
-                        console.log('asyncCallback items', form.titleMap);
                     },
                     function (data, status) {
                         alert("Loading select items failed(Options: '" + String(form.options) +
@@ -320,7 +314,6 @@
                     function (_data) {
 
                         $scope.finalizeTitleMap(form, _data.data, finalOptions);
-                        console.log('httpPost items', form.titleMap);
                     },
                     function (data, status) {
                         alert("Loading select items failed (URL: '" + String(finalOptions.httpPost.url) +
@@ -332,7 +325,6 @@
                 return $http.get(finalOptions.httpGet.url, finalOptions.httpGet.parameter).then(
                     function (data) {
                         $scope.finalizeTitleMap(form, data.data, finalOptions);
-                        console.log('httpGet items', form.titleMap);
                     },
                     function (data, status) {
                         alert("Loading select items failed (URL: '" + String(finalOptions.httpGet.url) +
@@ -355,7 +347,6 @@
         {
 
 
-            console.log("$scope.externalModel: Key: " +$scope.form.key.toString() + " Model: " + supplied_model.toString());
             $scope.externalModel = supplied_model;
             $scope.internalModel = [];
             if ($scope.form.titleMap) {
@@ -384,10 +375,7 @@
 
 
 
-            console.log("----- In filtering for " + controller.form.key + "(" + controller.form.title +"), model value: " + JSON.stringify( localModel) + "----");
-            console.log("Filter:" + controller.form.options.filter);
             if (!controller.filteringInitialized) {
-                console.log("Initialize filter");
                 controller.initFiltering(localModel);
             }
 
@@ -396,8 +384,6 @@
 
 
             angular.forEach(inputArray, function (curr_item) {
-                //console.log("Compare: curr_item: " + JSON.stringify(curr_item) +
-                //"with : " + JSON.stringify( controller.$eval(controller.form.options.filterTriggers[0])));
                 if (controller.$eval(controller.form.options.filter, {item: curr_item})) {
                     data.push(curr_item);
                 }
@@ -408,7 +394,6 @@
                         localModel.splice(localModel.indexOf(curr_item.value), 1);
                     }
                     else if (localModel == curr_item.value) {
-                        console.log("Setting model of type " + controller.localModelType  + "to null.");
                         localModel = null;
                     }
                 }
@@ -416,15 +401,10 @@
 
             if (controller.localModelType == "[object Array]" && !localModel) {
                 // An undefined local model seems to mess up bootstrap select's indicators
-                console.log("Resetting model of type " + controller.localModelType  + " to [].");
 
                 controller.$eval(strLocalModel + "=[]");
             }
 
-            //console.log("Input: " + JSON.stringify(inputArray));
-            //console.log("Output: " + JSON.stringify(data));
-            //console.log("Model value out : " + JSON.stringify(localModel));
-            console.log("----- Exiting filter for " + controller.form.title + "-----");
 
             return data;
         };
